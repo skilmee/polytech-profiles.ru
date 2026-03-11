@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профориентация | ФИТ Московский Политех</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">ФИТ • Московский Политех</div>
+    <nav>
+        <a href="index.html">Главная</a>
+        <a href="programs.html">Направления</a>
+        <a href="career.html">Карьера</a>
+        <a href="navigator.html" class="active">Профориентация</a>
+    </nav>
+</header>
+
+<main class="page-main">
+  <section class="content">
+    <div class="page-hero">
+      <div class="page-kicker">Персональная рекомендация</div>
+      <h1>Интеллектуальная профориентация</h1>
+      <p>
+        Пройдите тест и получите объясняемый результат: рекомендуемый профиль, уровень совпадения,
+        ключевые факторы выбора, сильные стороны, зоны роста и близкие альтернативы.
+      </p>
+    </div>
+  </section>
+
+  <section class="navigator-wrapper">
+    <div class="content">
+      <div id="welcome" class="navigator-card active">
+        <div class="navigator-intro">
+          <h1>Начните тестирование</h1>
+          <p>
+            Ответьте на вопросы о своих интересах, способе мышления и профессиональных склонностях.
+            Система сопоставит ваш профиль с образовательными траекториями факультета.
+          </p>
+        </div>
+        <button id="startBtn" class="primary-btn">Начать тест</button>
+      </div>
+
+      <div id="quiz" class="navigator-card">
+        <div class="progress-bar">
+          <div id="progress"></div>
+        </div>
+
+        <h2 id="questionTitle"></h2>
+        <div id="answers" class="answers"></div>
+      </div>
+
+      <div id="result" class="navigator-card result-card">
+        <h2 id="resultTitle"></h2>
+
+        <canvas id="skillsChart"></canvas>
+
+        <div id="resultDetails"></div>
+
+        <button id="restartBtn" class="secondary-btn">Пройти заново</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+    © 2026 ФИТ Московского Политеха
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</body>
+</html>

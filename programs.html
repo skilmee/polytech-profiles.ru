@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Направления | ФИТ</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">ФИТ • Московский Политех</div>
+  <nav>
+    <a href="index.html">Главная</a>
+    <a href="programs.html" class="active">Направления</a>
+    <a href="career.html">Карьера</a>
+    <a href="navigator.html">Профориентация</a>
+  </nav>
+</header>
+
+<main class="page-main">
+  <section class="content">
+    <div class="page-hero fade-in">
+      <div class="page-kicker">Академическая структура подготовки</div>
+      <h1>Направления и профили факультета</h1>
+      <p>
+        Ниже представлены образовательные направления ФИТ с профилями подготовки.
+        Для каждого профиля доступно краткое описание и подробная аналитическая карточка.
+      </p>
+    </div>
+
+    <div class="page-panel">
+      <div class="section-caption">
+        Нажмите на направление, чтобы раскрыть список профилей. Нажмите на профиль, чтобы открыть полную карточку.
+      </div>
+      <div id="programsContainer" class="accordion"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  © 2026 ФИТ Московского Политеха
+</footer>
+
+<script src="js/programsData.js"></script>
+<script src="js/programsUI.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Карьера | ФИТ</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">ФИТ • Московский Политех</div>
+  <nav>
+    <a href="index.html">Главная</a>
+    <a href="programs.html">Направления</a>
+    <a href="career.html" class="active">Карьера</a>
+    <a href="navigator.html">Профориентация</a>
+  </nav>
+</header>
+
+<main class="page-main">
+  <section class="content">
+    <div class="page-hero">
+      <div class="page-kicker">Карьерный контекст</div>
+      <h1>Карьерная аналитика</h1>
+      <p>
+        Сравнительный график показывает ориентировочные уровни дохода для нескольких
+        типовых ИТ-ролей, чтобы помочь пользователю связать образовательный выбор с профессиональной траекторией.
+      </p>
+    </div>
+
+    <div class="chart-shell">
+      <div class="chart-header">
+        <h2>Сравнение уровней дохода</h2>
+        <p>
+          Диаграмма отражает различия между стартовым, средним и продвинутым уровнем
+          в нескольких профессиональных ролях, представленных в проекте.
+        </p>
+      </div>
+      <div class="chart-canvas-wrap">
+        <canvas id="salaryChart"></canvas>
+      </div>
+    </div>
+
+    <div class="insight-grid">
+      <article class="insight-card">
+        <h3>Интеллектуальные системы</h3>
+        <p>
+          Роли, связанные с анализом данных и интеллектуальными методами, требуют
+          сильной математической и аналитической подготовки.
+        </p>
+      </article>
+
+      <article class="insight-card">
+        <h3>Прикладная разработка</h3>
+        <p>
+          Веб-разработка и корпоративные системы ориентированы на практическое
+          создание цифровых сервисов и прикладных решений.
+        </p>
+      </article>
+
+      <article class="insight-card">
+        <h3>Информационная безопасность</h3>
+        <p>
+          Профили безопасности предполагают работу с инфраструктурой, защитой
+          систем, анализом инцидентов и инженерными средствами защиты.
+        </p>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer>
+  © 2026 ФИТ Московского Политеха
+</footer>
+
+<script src="js/salaryChart.js"></script>
+
+</body>
+</html>
