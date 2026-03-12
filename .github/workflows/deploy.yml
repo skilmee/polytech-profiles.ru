@@ -22,7 +22,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
 
-          source: "index.html,career.html,navigator.html,programs.html,css,js"
+          source: "./*"
           target: "/var/www/mysite"
           rm: true
 
