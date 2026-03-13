@@ -77,8 +77,6 @@ function showResults() {
 
   resultDetails.innerHTML = `
     <section class="result-section">
-      <div class="type-badge">${recommendation.userType.name}</div>
-      <p class="result-paragraph">${recommendation.userType.description}</p>
       <p class="result-paragraph">${best.profile.description}</p>
     </section>
 
@@ -163,27 +161,49 @@ function showResults() {
         ${recommendation.firstSteps.map(item => `<li>${item}</li>`).join("")}
       </ul>
     </section>
-
-    <button id="downloadPdf" class="primary-btn" style="margin-top: 18px;">
-      Скачать PDF-отчёт
-    </button>
   `;
 
-  renderChart(best.profile.vector);
+  requestAnimationFrame(() => {
+    renderChart(best.profile.vector);
+  });
+}
 
-  document.getElementById("downloadPdf").onclick = () => {
-    generatePDF(recommendation);
-  };
+function splitRadarLabel(label, maxLength = 16) {
+  const words = label.split(" ");
+  const lines = [];
+  let currentLine = "";
+
+  words.forEach(word => {
+    const testLine = currentLine ? `${currentLine} ${word}` : word;
+
+    if (testLine.length <= maxLength) {
+      currentLine = testLine;
+    } else {
+      if (currentLine) lines.push(currentLine);
+      currentLine = word;
+    }
+  });
+
+  if (currentLine) lines.push(currentLine);
+
+  return lines;
 }
 
 function renderChart(profileVector) {
   const ctx = document.getElementById("skillsChart");
+  if (!ctx) return;
 
   if (window.myChart) {
     window.myChart.destroy();
   }
 
-  const labels = PARAMETERS.map(param => translateParam(param));
+  const isMobile = window.innerWidth < 768;
+
+  const labels = PARAMETERS.map(param => {
+    const label = translateParam(param);
+    return isMobile ? splitRadarLabel(label, 16) : label;
+  });
+
   const maxValue = Math.max(
     8,
     ...PARAMETERS.map(param => userVector[param] || 0),
@@ -201,33 +221,62 @@ function renderChart(profileVector) {
           backgroundColor: "rgba(99, 102, 241, 0.25)",
           borderColor: "#6366f1",
           borderWidth: 2,
-          pointBackgroundColor: "#6366f1"
+          pointBackgroundColor: "#6366f1",
+          pointRadius: 3
         },
         {
           label: "Требования профиля",
           data: PARAMETERS.map(param => profileVector[param] || 0),
-          backgroundColor: "rgba(34, 211, 238, 0.20)",
+          backgroundColor: "rgba(34, 211, 238, 0.2)",
           borderColor: "#22d3ee",
           borderWidth: 2,
-          pointBackgroundColor: "#22d3ee"
+          pointBackgroundColor: "#22d3ee",
+          pointRadius: 3
         }
       ]
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
+      animation: false,
+      layout: {
+        padding: {
+          top: 26,
+          right: isMobile ? 18 : 8,
+          bottom: 8,
+          left: isMobile ? 18 : 8
+        }
+      },
       scales: {
         r: {
           min: 0,
           max: maxValue,
           grid: { color: "#334155" },
           angleLines: { color: "#334155" },
-          pointLabels: { color: "#f1f5f9", font: { size: 11 } },
-          ticks: { display: false }
+          pointLabels: {
+            color: "#f1f5f9",
+            centerPointLabels: true,
+            padding: isMobile ? 8 : 6,
+            font: {
+              size: isMobile ? 10 : 13
+            }
+          },
+          ticks: {
+            display: false,
+            stepSize: 1
+          }
         }
       },
       plugins: {
         legend: {
-          labels: { color: "#f1f5f9" }
+          position: "top",
+          labels: {
+            color: "#f1f5f9",
+            padding: 24,
+            font: {
+              size: isMobile ? 11 : 14
+            }
+          }
         }
       }
     }
@@ -242,60 +291,3 @@ startBtn.onclick = () => {
 restartBtn.onclick = () => {
   location.reload();
 };
-
-function generatePDF(recommendation) {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-
-  let y = 20;
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(16);
-  doc.text("Персональный профориентационный отчёт", 20, y);
-
-  y += 12;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(12);
-  doc.text(`Рекомендуемый профиль: ${recommendation.best.program.code} — ${recommendation.best.profile.name}`, 20, y);
-
-  y += 8;
-  doc.text(`Совпадение: ${recommendation.best.percent}%`, 20, y);
-
-  y += 8;
-  doc.text(`Тип профиля: ${recommendation.userType.name}`, 20, y);
-
-  y += 12;
-  doc.setFont("helvetica", "bold");
-  doc.text("Сильные стороны:", 20, y);
-
-  y += 8;
-  doc.setFont("helvetica", "normal");
-  recommendation.userStrengths.forEach(item => {
-    doc.text(`• ${item}`, 25, y);
-    y += 7;
-  });
-
-  y += 3;
-  doc.setFont("helvetica", "bold");
-  doc.text("Зоны роста:", 20, y);
-
-  y += 8;
-  doc.setFont("helvetica", "normal");
-  recommendation.growthZones.forEach(item => {
-    doc.text(`• ${item}`, 25, y);
-    y += 7;
-  });
-
-  y += 3;
-  doc.setFont("helvetica", "bold");
-  doc.text("Что изучать уже сейчас:", 20, y);
-
-  y += 8;
-  doc.setFont("helvetica", "normal");
-  recommendation.firstSteps.forEach(item => {
-    doc.text(`• ${item}`, 25, y);
-    y += 7;
-  });
-
-  doc.save("career-report-fit.pdf");
-}
