@@ -44,14 +44,12 @@ function buildProgramCards() {
     const header = document.createElement("div");
     header.className = "accordion-header";
     header.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:18px;">
-        <div>
+      <div class="accordion-header-main">
+        <div class="accordion-header-text">
           <h3>${program.code} — ${program.name}</h3>
-          <p style="margin-top:10px;color:#94a3b8;">
-            Профилей: ${program.profiles.length}
-          </p>
+          <p>Профилей: ${program.profiles.length}</p>
         </div>
-        <div style="font-size:22px;color:#22d3ee;line-height:1;">+</div>
+        <span class="accordion-header-icon" data-accordion-icon>+</span>
       </div>
     `;
 
@@ -63,19 +61,14 @@ function buildProgramCards() {
       card.className = "profile-card";
 
       card.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;">
-          <div style="flex:1;min-width:280px;">
-            <h4>${profile.name}</h4>
-            <p style="margin-top:10px;">${profile.description || "Описание профиля не указано."}</p>
-            <p style="margin-top:12px;color:#22d3ee;font-size:14px;">
-              ${getProfileType(profile)}
-            </p>
-          </div>
-          <div style="display:flex;align-items:center;color:#94a3b8;font-size:14px;">
-            Подробнее →
-          </div>
-        </div>
-      `;
+  <div class="profile-card-main">
+    <div class="profile-card-text">
+      <h4>${profile.name}</h4>
+      <p>${profile.description || "Описание профиля не указано."}</p>
+    </div>
+    <div class="profile-card-link">Подробнее →</div>
+  </div>
+`;
 
       card.onclick = () => openModal(profile, program);
       content.appendChild(card);
@@ -88,25 +81,15 @@ function buildProgramCards() {
         item.classList.remove("open");
       });
 
-      document.querySelectorAll(".accordion-header").forEach(item => {
-        const icon = item.querySelector("[data-accordion-icon]");
-        if (icon) icon.textContent = "+";
+      document.querySelectorAll("[data-accordion-icon]").forEach(icon => {
+        icon.textContent = "+";
       });
 
       if (!isOpen) {
         content.classList.add("open");
-      }
-
-      const currentIcon = header.querySelector("[data-accordion-icon]");
-      if (currentIcon) {
-        currentIcon.textContent = !isOpen ? "−" : "+";
+        header.querySelector("[data-accordion-icon]").textContent = "−";
       }
     };
-
-    const iconNode = header.querySelector("div:last-child");
-    if (iconNode) {
-      iconNode.setAttribute("data-accordion-icon", "true");
-    }
 
     programBlock.appendChild(header);
     programBlock.appendChild(content);
@@ -125,83 +108,78 @@ function openModal(profile, program) {
 
   modal.innerHTML = `
     <div class="modal-window">
-      <span class="modal-close" aria-label="Закрыть модальное окно">&times;</span>
+      <span class="modal-close" aria-label="Закрыть">&times;</span>
 
-      <div style="margin-bottom:24px;">
-        <p style="color:#22d3ee;font-size:14px;font-weight:700;margin-bottom:10px;">
-          ${program.code} — ${program.name}
-        </p>
+      <div class="modal-top">
+        <p class="modal-program-label">${program.code} — ${program.name}</p>
         <h2>${profile.name}</h2>
-        <p style="margin-top:14px;">${profile.description || "Описание профиля не указано."}</p>
+        <p class="modal-description">${profile.description || "Описание профиля не указано."}</p>
       </div>
 
-      <section style="margin-top:22px;">
+      <section class="modal-section">
         <h3>Тип выпускника</h3>
         <p>${getProfileType(profile)}</p>
       </section>
 
-      <section style="margin-top:22px;">
+      <section class="modal-section">
         <h3>Технический стек</h3>
         <ul>${buildList(profile.stack)}</ul>
       </section>
 
-      <section style="margin-top:22px;">
+      <section class="modal-section">
         <h3>Распределение дисциплин</h3>
-        <div style="margin-top:14px;background:rgba(15,23,42,0.45);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:18px;">
+        <div class="modal-chart-wrap">
           <canvas id="distributionChart"></canvas>
         </div>
       </section>
 
-      <section style="margin-top:22px;">
+      <section class="modal-section">
         <h3>Оценка профиля</h3>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px;">
-          <div style="background:rgba(15,23,42,0.45);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:14px;">
-            <div style="color:#94a3b8;font-size:14px;">Программирование</div>
-            <div style="font-size:24px;font-weight:800;margin-top:6px;">${rating.programming}/10</div>
+        <div class="rating-grid">
+          <div class="rating-card">
+            <div class="rating-label">Программирование</div>
+            <div class="rating-value">${rating.programming}/10</div>
           </div>
-          <div style="background:rgba(15,23,42,0.45);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:14px;">
-            <div style="color:#94a3b8;font-size:14px;">Математика</div>
-            <div style="font-size:24px;font-weight:800;margin-top:6px;">${rating.math}/10</div>
+          <div class="rating-card">
+            <div class="rating-label">Математика</div>
+            <div class="rating-value">${rating.math}/10</div>
           </div>
-          <div style="background:rgba(15,23,42,0.45);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:14px;">
-            <div style="color:#94a3b8;font-size:14px;">Инженерность</div>
-            <div style="font-size:24px;font-weight:800;margin-top:6px;">${rating.engineering}/10</div>
+          <div class="rating-card">
+            <div class="rating-label">Инженерность</div>
+            <div class="rating-value">${rating.engineering}/10</div>
           </div>
-          <div style="background:rgba(15,23,42,0.45);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:14px;">
-            <div style="color:#94a3b8;font-size:14px;">Прикладность</div>
-            <div style="font-size:24px;font-weight:800;margin-top:6px;">${rating.applied}/10</div>
+          <div class="rating-card">
+            <div class="rating-label">Прикладность</div>
+            <div class="rating-value">${rating.applied}/10</div>
           </div>
-          <div style="background:rgba(15,23,42,0.45);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:14px;">
-            <div style="color:#94a3b8;font-size:14px;">Исследовательский потенциал</div>
-            <div style="font-size:24px;font-weight:800;margin-top:6px;">${rating.research}/10</div>
+          <div class="rating-card">
+            <div class="rating-label">Исследовательский потенциал</div>
+            <div class="rating-value">${rating.research}/10</div>
           </div>
         </div>
       </section>
 
-      <section style="margin-top:22px;">
+      <section class="modal-section">
         <h3>Кому подойдёт</h3>
         <ul>${buildList(profile.suitable)}</ul>
       </section>
 
-      <section style="margin-top:22px;">
+      <section class="modal-section">
         <h3>Кому не подойдёт</h3>
         <ul>${buildList(profile.notSuitable)}</ul>
       </section>
 
-      <section style="margin-top:22px;">
+      <section class="modal-section">
         <h3>Преимущества</h3>
         <ul>${buildList(profile.strengths)}</ul>
       </section>
 
-      <section style="margin-top:22px;">
+      <section class="modal-section">
         <h3>Потенциальные риски</h3>
         <ul>${buildList(profile.risks)}</ul>
       </section>
 
-      <section style="margin-top:22px;">
-        <h3>Аналитический вывод</h3>
-        <p>${profile.analyticConclusion || "Аналитический вывод не указан."}</p>
-      </section>
+     
     </div>
   `;
 
@@ -211,8 +189,7 @@ function openModal(profile, program) {
   document.body.style.overflow = "hidden";
   activeModal = modal;
 
-  const closeBtn = modal.querySelector(".modal-close");
-  closeBtn.onclick = closeModal;
+  modal.querySelector(".modal-close").onclick = closeModal;
 
   modal.onclick = event => {
     if (event.target === modal) {
@@ -245,9 +222,32 @@ function handleModalEscape(event) {
   }
 }
 
+function splitLabel(label, maxLength = 18) {
+  const cleaned = label.replace(" (%)", "").trim();
+  const words = cleaned.split(" ");
+  const lines = [];
+  let currentLine = "";
+
+  words.forEach(word => {
+    if ((currentLine + " " + word).trim().length <= maxLength) {
+      currentLine = (currentLine + " " + word).trim();
+    } else {
+      if (currentLine) lines.push(currentLine);
+      currentLine = word;
+    }
+  });
+
+  if (currentLine) lines.push(currentLine);
+
+  return lines.length ? lines : [cleaned];
+}
+
 function renderChart(data) {
   const ctx = document.getElementById("distributionChart");
   if (!ctx) return;
+
+  const isMobile = window.innerWidth < 768;
+  const labels = Object.keys(data).map(label => splitLabel(label, isMobile ? 14 : 20));
 
   if (distributionChartInstance) {
     distributionChartInstance.destroy();
@@ -256,7 +256,7 @@ function renderChart(data) {
   distributionChartInstance = new Chart(ctx, {
     type: "bar",
     data: {
-      labels: Object.keys(data),
+      labels,
       datasets: [
         {
           label: "% от учебного плана",
@@ -271,31 +271,40 @@ function renderChart(data) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      indexAxis: isMobile ? "y" : "x",
       plugins: {
         legend: {
           display: true,
           labels: {
-            color: "#f1f5f9"
+            color: "#f1f5f9",
+            boxWidth: 26,
+            font: {
+              size: isMobile ? 12 : 14
+            }
           }
         }
       },
       scales: {
         x: {
+          beginAtZero: true,
+          max: 100,
           ticks: {
             color: "#cbd5e1",
-            maxRotation: 0,
-            minRotation: 0
+            callback: value => `${value}%`,
+            font: {
+              size: isMobile ? 11 : 13
+            }
           },
           grid: {
             color: "rgba(148, 163, 184, 0.08)"
           }
         },
         y: {
-          beginAtZero: true,
-          max: 100,
           ticks: {
             color: "#cbd5e1",
-            callback: value => `${value}%`
+            font: {
+              size: isMobile ? 11 : 13
+            }
           },
           grid: {
             color: "rgba(148, 163, 184, 0.08)"
@@ -305,7 +314,7 @@ function renderChart(data) {
     }
   });
 
-  ctx.parentElement.style.minHeight = "360px";
+  ctx.parentElement.style.minHeight = isMobile ? "420px" : "360px";
 }
 
 buildProgramCards();
