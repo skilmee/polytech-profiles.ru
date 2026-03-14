@@ -224,22 +224,30 @@ function handleModalEscape(event) {
 
 function splitLabel(label, maxLength = 18) {
   const cleaned = label.replace(" (%)", "").trim();
-  const words = cleaned.split(" ");
+
+  const prepared = cleaned
+    .replace(/-/g, "- ")
+    .split(/\s+/)
+    .filter(Boolean);
+
   const lines = [];
   let currentLine = "";
 
-  words.forEach(word => {
-    if ((currentLine + " " + word).trim().length <= maxLength) {
-      currentLine = (currentLine + " " + word).trim();
+  prepared.forEach(word => {
+    const normalizedWord = word.replace(/-\s?$/, "-");
+    const testLine = currentLine ? `${currentLine} ${normalizedWord}` : normalizedWord;
+
+    if (testLine.length <= maxLength) {
+      currentLine = testLine;
     } else {
-      if (currentLine) lines.push(currentLine);
-      currentLine = word;
+      if (currentLine) lines.push(currentLine.trim());
+      currentLine = normalizedWord;
     }
   });
 
-  if (currentLine) lines.push(currentLine);
+  if (currentLine) lines.push(currentLine.trim());
 
-  return lines.length ? lines : [cleaned];
+  return lines.map(line => line.replace(/-\s/g, "-"));
 }
 
 function renderChart(data) {
