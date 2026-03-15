@@ -61,14 +61,14 @@ function buildProgramCards() {
       card.className = "profile-card";
 
       card.innerHTML = `
-  <div class="profile-card-main">
-    <div class="profile-card-text">
-      <h4>${profile.name}</h4>
-      <p>${profile.description || "Описание профиля не указано."}</p>
-    </div>
-    <div class="profile-card-link">Подробнее →</div>
-  </div>
-`;
+        <div class="profile-card-main">
+          <div class="profile-card-text">
+            <h4>${profile.name}</h4>
+            <p>${profile.description || "Описание профиля не указано."}</p>
+          </div>
+          <div class="profile-card-link">Подробнее →</div>
+        </div>
+      `;
 
       card.onclick = () => openModal(profile, program);
       content.appendChild(card);
@@ -178,8 +178,6 @@ function openModal(profile, program) {
         <h3>Потенциальные риски</h3>
         <ul>${buildList(profile.risks)}</ul>
       </section>
-
-     
     </div>
   `;
 
@@ -250,16 +248,69 @@ function splitLabel(label, maxLength = 18) {
   return lines.map(line => line.replace(/-\s/g, "-"));
 }
 
+function normalizeTooltipLabel(rawLabel) {
+  if (Array.isArray(rawLabel)) {
+    return rawLabel
+      .join(" ")
+      .replace(/,\s*/g, " ")
+      .replace(/-\s+/g, "-")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  return String(rawLabel)
+    .replace(/,\s*/g, " ")
+    .replace(/-\s+/g, "-")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getTooltipTitle(tooltipItems) {
+  const firstItem = tooltipItems?.[0];
+  if (!firstItem) return "";
+
+  const originalLabel = firstItem.chart?.data?.labels?.[firstItem.dataIndex];
+  return normalizeTooltipLabel(originalLabel ?? firstItem.label);
+}
+
 function renderChart(data) {
   const ctx = document.getElementById("distributionChart");
   if (!ctx) return;
 
   const isMobile = window.innerWidth < 768;
   const labels = Object.keys(data).map(label => splitLabel(label, isMobile ? 14 : 20));
+  const values = Object.values(data);
 
   if (distributionChartInstance) {
     distributionChartInstance.destroy();
   }
+
+  const numericAxis = {
+    beginAtZero: true,
+    max: 100,
+    ticks: {
+      color: "#cbd5e1",
+      callback: value => `${value}%`,
+      font: {
+        size: isMobile ? 11 : 13
+      }
+    },
+    grid: {
+      color: "rgba(148, 163, 184, 0.08)"
+    }
+  };
+
+  const categoryAxis = {
+    ticks: {
+      color: "#cbd5e1",
+      font: {
+        size: isMobile ? 11 : 13
+      }
+    },
+    grid: {
+      color: "rgba(148, 163, 184, 0.08)"
+    }
+  };
 
   distributionChartInstance = new Chart(ctx, {
     type: "bar",
@@ -268,7 +319,7 @@ function renderChart(data) {
       datasets: [
         {
           label: "% от учебного плана",
-          data: Object.values(data),
+          data: values,
           backgroundColor: "rgba(59, 130, 246, 0.75)",
           borderColor: "#60a5fa",
           borderWidth: 1,
@@ -290,35 +341,24 @@ function renderChart(data) {
               size: isMobile ? 12 : 14
             }
           }
+        },
+        tooltip: {
+          callbacks: {
+            title: function(tooltipItems) {
+              return getTooltipTitle(tooltipItems);
+            }
+          }
         }
       },
-      scales: {
-        x: {
-          beginAtZero: true,
-          max: 100,
-          ticks: {
-            color: "#cbd5e1",
-            callback: value => `${value}%`,
-            font: {
-              size: isMobile ? 11 : 13
-            }
-          },
-          grid: {
-            color: "rgba(148, 163, 184, 0.08)"
+      scales: isMobile
+        ? {
+            x: numericAxis,
+            y: categoryAxis
           }
-        },
-        y: {
-          ticks: {
-            color: "#cbd5e1",
-            font: {
-              size: isMobile ? 11 : 13
-            }
-          },
-          grid: {
-            color: "rgba(148, 163, 184, 0.08)"
+        : {
+            x: categoryAxis,
+            y: numericAxis
           }
-        }
-      }
     }
   });
 

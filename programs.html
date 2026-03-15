@@ -15,6 +15,7 @@
   <nav>
     <a href="index.html">Главная</a>
     <a href="programs.html" class="active">Направления</a>
+    <a href="career.html">Карьера</a>
     <a href="navigator.html">Профориентация</a>
   </nav>
 </header>
@@ -26,8 +27,87 @@
       <h1>Направления и профили факультета</h1>
       <p>
         Ниже представлены образовательные направления ФИТ с профилями подготовки.
-        Для каждого профиля доступно краткое описание и подробная аналитическая карточка.
+        Для каждого профиля доступно краткое описание и подробная карточка.
       </p>
+    </div>
+
+    <div class="page-panel filter-panel">
+      <div class="section-caption">
+        Быстрый подбор профиля по интересам и предпочтениям.
+      </div>
+
+      <div class="filter-controls">
+        <div class="filter-field">
+          <label for="interestDirection">Что вам интереснее всего?</label>
+          <select id="interestDirection">
+            <option value="">Не выбрано</option>
+            <option value="programming">Программирование</option>
+            <option value="data">Данные и аналитика</option>
+            <option value="security">Защита информации</option>
+            <option value="hardware">Устройства и электроника</option>
+            <option value="business">Бизнес-системы</option>
+            <option value="creative">Креативные цифровые продукты</option>
+            <option value="systems">Сложные системы и инженерия</option>
+          </select>
+        </div>
+
+        <div class="filter-field">
+          <label for="mathPreference">Как вы относитесь к математике?</label>
+          <select id="mathPreference">
+            <option value="">Не выбрано</option>
+            <option value="low">Хочу меньше математики</option>
+            <option value="medium">Нормально отношусь к среднему уровню</option>
+            <option value="high">Готов к высокой математической нагрузке</option>
+          </select>
+        </div>
+
+        <div class="filter-field">
+          <label for="studyPreference">Какой формат подготовки ближе?</label>
+          <select id="studyPreference">
+            <option value="">Не выбрано</option>
+            <option value="applied">Прикладной</option>
+            <option value="engineering">Инженерный</option>
+            <option value="research">Исследовательский</option>
+          </select>
+        </div>
+
+        <div class="filter-actions">
+          <button id="filterProfilesBtn" class="primary-btn" type="button">Подобрать</button>
+          <button id="resetProfilesBtn" class="secondary-btn" type="button">Сбросить</button>
+        </div>
+      </div>
+
+      <div id="filterResult" class="filter-result" style="display:none;"></div>
+    </div>
+
+    <div class="page-panel compare-panel">
+      <div class="section-caption">
+        Выберите два или три профиля и сравните их по ключевым характеристикам.
+      </div>
+
+      <div class="compare-controls">
+        <div class="compare-field">
+          <label for="compareProfile1">Профиль 1</label>
+          <select id="compareProfile1"></select>
+        </div>
+
+        <div class="compare-field">
+          <label for="compareProfile2">Профиль 2</label>
+          <select id="compareProfile2"></select>
+        </div>
+
+        <div class="compare-field">
+          <label for="compareProfile3">Профиль 3</label>
+          <select id="compareProfile3"></select>
+        </div>
+
+        <div class="compare-actions">
+          <button id="compareBtn" class="primary-btn" type="button">Сравнить</button>
+          <button id="resetCompareBtn" class="secondary-btn" type="button">Сбросить</button>
+        </div>
+      </div>
+
+      <div id="compareResult" class="compare-result" style="display:none;"></div>
     </div>
 
     <div class="page-panel">
@@ -35,6 +115,22 @@
         Нажмите на направление, чтобы раскрыть список профилей. Нажмите на профиль, чтобы открыть полную карточку.
       </div>
       <div id="programsContainer" class="accordion"></div>
+    </div>
+
+    <div class="page-panel map-panel">
+      <div class="section-caption">
+        Карта профилей показывает, как все направления факультета распределяются по ключевым технологическим зонам.
+      </div>
+
+      <div class="profile-map-header">
+        <h2>Структура факультета по технологическим зонам</h2>
+        <p>
+          Здесь профили сгруппированы по основной логике подготовки:
+          данные, разработка, безопасность, устройства, бизнес-системы и креативные технологии.
+        </p>
+      </div>
+
+      <div id="profileMapGrid" class="profile-map-grid"></div>
     </div>
   </section>
 </main>
@@ -45,6 +141,9 @@
 
 <script src="js/programsData.js"></script>
 <script src="js/programsUI.js"></script>
+<script src="js/profileMap.js"></script>
+<script src="js/profileCompare.js"></script>
+<script src="js/profileFilter.js"></script>
 
 </body>
 </html>

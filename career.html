@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Карьера | ФИТ</title>
+  <link rel="icon" type="image/png" href="polytech_logo_sizes_black.png">
   <link rel="stylesheet" href="css/style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -21,52 +21,28 @@
 
 <main class="page-main">
   <section class="content">
-    <div class="page-hero">
-      <div class="page-kicker">Карьерный контекст</div>
-      <h1>Карьерная аналитика</h1>
+    <div class="page-hero fade-in">
+      <div class="page-kicker">Карьерные траектории</div>
+      <h1>Кем можно стать после обучения</h1>
       <p>
-        Сравнительный график показывает ориентировочные уровни дохода для нескольких
-        типовых ИТ-ролей, чтобы помочь пользователю связать образовательный выбор с профессиональной траекторией.
+        Выберите профиль и посмотрите, какие стартовые роли, направления роста
+        и долгосрочные карьерные траектории он открывает.
       </p>
     </div>
 
-    <div class="chart-shell">
-      <div class="chart-header">
-        <h2>Сравнение уровней дохода</h2>
-        <p>
-          Диаграмма отражает различия между стартовым, средним и продвинутым уровнем
-          в нескольких профессиональных ролях, представленных в проекте.
-        </p>
+    <div class="page-panel career-selector-panel">
+      <div class="section-caption">
+        Страница показывает не абстрактный список профессий, а типовую карьерную траекторию выпускника.
       </div>
-      <div class="chart-canvas-wrap">
-        <canvas id="salaryChart"></canvas>
+
+      <div class="career-selector-row">
+        <div class="career-selector-field">
+          <label for="careerProfileSelect">Выберите профиль</label>
+          <select id="careerProfileSelect"></select>
+        </div>
       </div>
-    </div>
 
-    <div class="insight-grid">
-      <article class="insight-card">
-        <h3>Интеллектуальные системы</h3>
-        <p>
-          Роли, связанные с анализом данных и интеллектуальными методами, требуют
-          сильной математической и аналитической подготовки.
-        </p>
-      </article>
-
-      <article class="insight-card">
-        <h3>Прикладная разработка</h3>
-        <p>
-          Веб-разработка и корпоративные системы ориентированы на практическое
-          создание цифровых сервисов и прикладных решений.
-        </p>
-      </article>
-
-      <article class="insight-card">
-        <h3>Информационная безопасность</h3>
-        <p>
-          Профили безопасности предполагают работу с инфраструктурой, защитой
-          систем, анализом инцидентов и инженерными средствами защиты.
-        </p>
-      </article>
+      <div id="careerResult" class="career-result"></div>
     </div>
   </section>
 </main>
@@ -75,7 +51,8 @@
   © 2026 ФИТ Московского Политеха
 </footer>
 
-<script src="js/salaryChart.js"></script>
+<script src="js/programsData.js"></script>
+<script src="js/careerPaths.js"></script>
 
 </body>
 </html>
